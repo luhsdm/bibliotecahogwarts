@@ -206,17 +206,14 @@ def processa_avaliacao(request):
     return redirect(f'/adminlte/templates/adminlte/ver_livros.html{id_livro}')
 
 
-def buscar_livros(request):
-    try:
+def buscar(request):
+    search_query = request.GET.get('q', '')
+    usuarios = Usuario.objects.filter(nome__icontains=search_query)
+    livros = Livros.objects.filter(nome__icontains=search_query)
+    data = {
 
-        query = request.GET.get('q', '')
-        livros = Livros.objects.filter(nome__icontains=query)
+        'usuarios': list(usuarios.values('id', 'nome')),
 
-        data = [{'id': livro.id, 'nome': livro.nome} for livro in livros]
-
-        return JsonResponse(data, safe=False)
-
-    except Exception as e:
-
-        print(f"Erro ao buscar livros: {str(e)}")
-        return JsonResponse({'error': 'Ocorreu um erro ao buscar os livros.'}, status=500)
+        'livros': list(livros.values('id', 'nome')),
+    }
+    return JsonResponse(data)

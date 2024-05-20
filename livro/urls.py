@@ -14,5 +14,5 @@ urlpatterns = [
     path('alterar_livro', views.alterar_livro, name="alterar_livro"),
     path('seus_emprestimos', views.seus_emprestimos, name="seus_emprestimos"),
     path('processa_avaliacao', views.processa_avaliacao, name="processa_avaliacao"),
-    path('buscar-livros/', views.buscar_livros, name='buscar_livros'),
+    path('buscar/', views.buscar, name='buscar'),
 ]
