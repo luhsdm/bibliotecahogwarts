@@ -1,0 +1,132 @@
+{% extends "adminlte/base.html" %}
+{% load static %}
+
+{% block 'titulo' %} Cadastro {% endblock %}
+
+{% block 'conteudo' %}
+<div class="container">
+  <br>
+  {% if status == '0' %}
+  <div class="d-flex justify-content-center">
+    <button type="button" class="btn btn-success">
+      Cadastro realizado com sucesso
+    </button>
+  </div>
+  {% endif %}
+</div> <br>
+
+{% if status == '1' %}
+<div class="d-flex justify-content-center">
+  <button type="button" class="btn btn-warning toastsDefaultWarning">
+    Preencha todos os campos
+  </button>
+</div>
+{% endif %}
+</div> <br>
+
+{% if status == '2' %}
+<div class="d-flex justify-content-center">
+  <button type="button" class="btn btn-warning toastsDefaultWarning">
+    Sua senha deve ter pelo menos 8 caracteres
+  </button>
+</div>
+{% endif %}
+</div> <br>
+
+{% if status == '3' %}
+<div class="d-flex justify-content-center">
+  <button type="button" class="btn btn-danger toastsDefaultDanger">
+    Usuário já existe no sistema
+  </button>
+</div>
+{% endif %}
+</div> <br>
+
+{% if status == '4' %}
+<div class="d-flex justify-content-center"></div>
+<button type="button" class="btn btn-danger toastsDefaultDanger">
+  Erro interno do sistema
+</button>
+</div>
+{% endif %}
+</div> <br>
+
+{% if status == '5' %}
+<div class="d-flex justify-content-center">
+  <button type="button" class="btn btn-warning toastsDefaultWarning">
+    Formato de CPF/Telefone/Email inválidos
+  </button>
+</div>
+{% endif %}
+</div>
+
+<div class="container d-flex justify-content-center align-items-center">
+  <div class="register-box">
+    <div class="register-logo">
+      <a href="#"><img src="{% static 'dist/img/logo.png' %}" style="width: 200px; height: auto;"></a>
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-body register-card-body">
+        <p class="login-box-msg">Cadastre-se</p>
+
+        <form method="POST" action="{% url 'valida_cadastro' %}">
+          <div class="input-group mb-3">
+            <input name="nome" type="text" class="form-control" placeholder="Nome Completo">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input name="cpf" type="text" class="form-control" placeholder="000.000.000-00">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-key"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input name="telefone" type="text" class="form-control" placeholder="(00)0000-0000">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-phone"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input name="email" type="text" class="form-control" placeholder="Digite um email">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input name="senha" type="password" class="form-control" placeholder="Crie uma senha">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <button class="btn btn-info btn-lg btn-block" type="submit">{% csrf_token %}Enviar</button>
+            </div>
+            <div class="col-6">
+              <a href="{% url 'login' %}" class="btn btn-warning btn-lg btn-block">Login</a>
+            </div>
+          </div>
+        </form>
+
+        <a href="adminlte/templates/login.html" class="text-center">Já tem cadastro?</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
