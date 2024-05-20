@@ -1,35 +1,5 @@
 {% extends "adminlte/base.html" %}
 {% load static %}
-<script>
-  function ver_livros() {
-    $(document).ready(function () {
-      $('#ver_livros').submit(function (event) {
-        event.preventDefault();
-        var query = $('#search_query').val();
-
-        if (query.trim() !== '') {
-          $.ajax({
-            type: 'POST',
-            url: '/ver_livros/',
-            data: {
-              'search_query': query,
-              'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
-            },
-            success: function (response) {
-              $('#book-table').html(response);
-            },
-            error: function (xhr, status, error) {
-              console.error(xhr.responseText);
-            }
-          });
-        }
-      });
-    });
-  }
-  ver_livros();
-</script>
-
-
 {% block 'titulo' %} Ver Livros {% endblock %}
 
 {% block 'conteudo' %}
@@ -51,7 +21,6 @@
     </li>
   </ul>
 </nav>
-
 <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-expanded">
   <a href="home.html" class="brand-link">
     <img src="{% static 'dist/img/logobranco.png' %}" style="width: 150px; height: auto;">
@@ -101,7 +70,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-lg-6 col-6">
-      <form id="ver_livros" method="POST">
+      <form id="ver_livros" method="POST" action="">
         {% csrf_token %}
         <div class="form-group">
           <label class="small-label" for="search_query">Pesquisar por nome do livro:</label>
@@ -109,7 +78,7 @@
             <input type="search" class="form-control form-control-lg" placeholder="Pesquisar por nome do livro"
               name="search_query" id="search_query">
             <div class="input-group-append">
-              <button type="submit" class="btn btn-lg btn-default" id="search-button">
+              <button type="button" onclick="ver_livros()" class="btn btn-lg btn-default" id="search-button">
                 <i class="fas fa-search"></i>
               </button>
             </div>
@@ -121,7 +90,7 @@
 
   <hr>
   <div class="row justify-content-center">
-    <div class="col-lg-6 col-6">
+    <div class="col-10">
       <h2>Livros Encontrados</h2>
       <table class="table table-striped">
         <thead>
@@ -134,19 +103,32 @@
           </tr>
         </thead>
         <tbody id="tabela-livros">
-          {% for livro in livros %}
-          <tr>
-            <td>{{ livro.nome }}</td>
-            <td>{{ livro.autor }}</td>
-            <td>{{ livro.categoria }}</td>
-            <td>{{ livro.ano_publicacao }}</td>
-            <td>{{ livro.quantidade }}</td>
-            <td><img src="{{ livro.imagem.url }}" alt="{{ livro.imagem }}"></td>
-          </tr>
-          {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
 
+  <script>
+    function ver_livros() {
+      var query = $('#search_query').val();
+
+      if (query.trim() !== '') {
+        $.ajax({
+          type: 'POST',
+          url: '{% url "buscar_livro" %}',
+          data: {
+            'search_query': query,
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+          },
+          success: function (response) {
+            $('#tabela-livros').html(response);
+          },
+          error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+          }
+        });
+      }
+
+    }
+  </script>
   {% endblock %}

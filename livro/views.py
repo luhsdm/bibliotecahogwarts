@@ -12,7 +12,6 @@ from django.db.models import Q
 from usuarios.models import Usuario
 import holidays
 
-
 def home(request):
     usuario_id = request.session.get('usuario')
     if usuario_id:
@@ -49,16 +48,14 @@ def home(request):
     else:
         return redirect('/usuarios/login/?status=2')
 
-
 def ver_livros(request):
-    if request.method == 'POST':
-        search_query = request.POST.get('search_query', '')
+    return render(request, 'ver_livros')
 
-        livros = Livros.objects.filter(nome__icontains=search_query)
-    else:
-        livros = Livros.objects.all()
-    return render(request, 'adminlte/ver_livros.html', {'livros': livros, 'categorias': categorias})
+def buscar_livro(request):
+    search_query = request.POST.get('search_query', '')
+    livros = Livros.objects.filter(nome__contains=search_query) 
 
+    return render(request,'adminlte/buscar_livro.html', {'livros': livros, 'resultado_busca': livros.count()})
 
 def cadastrar_livro(request):
     if request.method == 'POST':
