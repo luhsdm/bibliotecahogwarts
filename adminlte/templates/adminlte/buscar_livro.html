@@ -1,0 +1,17 @@
+{% if resultado_busca > 0%}
+{% for livro in livros %}
+<tr>
+  <td>{{ livro.nome }}</td>
+  <td>{{ livro.autor }}</td>
+  <td>{{ livro.categoria }}</td>
+  <td>{{ livro.ano_publicacao }}</td>
+  {%if livro.imagem%}<td><img src="{{ livro.imagem.url }}" alt="{{ livro.imagem }}"></td>{% endif %}
+</tr>
+{% endfor %}
+{% endif %}
+
+{% if resultado_busca == 0 %}
+<td colspan="5" class="callout callout-warning">
+  Nenhum resultado encontrado
+</td>
+{% endif %}
