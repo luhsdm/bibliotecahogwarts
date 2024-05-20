@@ -12,6 +12,7 @@ from django.db.models import Q
 from usuarios.models import Usuario
 import holidays
 
+
 def home(request):
     usuario_id = request.session.get('usuario')
     if usuario_id:
@@ -48,18 +49,21 @@ def home(request):
     else:
         return redirect('/usuarios/login/?status=2')
 
+
 def ver_livros(request):
     return render(request, 'ver_livros')
 
-def buscar_livro(request):
-    search_query = request.POST.get('search_query', '')
-    livros = Livros.objects.filter(nome__contains=search_query) 
 
-    return render(request,'adminlte/buscar_livro.html', {'livros': livros, 'resultado_busca': livros.count()})
+def buscar_livros(request):
+    search_query = request.POST.get('search_query', '')
+    livros = Livros.objects.filter(nome__contains=search_query)
+
+    return render(request, 'adminlte/buscar_livro.html', {'livros': livros, 'resultado_busca': livros.count()})
+
 
 def cadastrar_livro(request):
     if request.method == 'POST':
-        form = CadastroLivro(request.POST)
+        form = CadastroLivro(request.POST, request.FILES)
 
         if form.is_valid():
             novo_livro = form.save(commit=False)
@@ -68,8 +72,6 @@ def cadastrar_livro(request):
             novo_livro.save()
             return redirect('home')
         else:
-            print(form.errors)
-            form = CadastroLivro()
             return render(request, 'adminlte/home.html', {'form': form})
     else:
         form = CadastroLivro()
@@ -168,7 +170,6 @@ def alterar_livro(request):
     livro_id = request.POST.get('livro_id')
     nome_livro = request.POST.get('nome_livro')
     autor = request.POST.get('autor')
-    co_autor = request.POST.get('co_autor')
     categoria_id = request.POST.get('categoria_id')
 
     categoria = Categoria.objects.get(id=categoria_id)
@@ -176,7 +177,6 @@ def alterar_livro(request):
     if livro.usuario.id == request.session['usuario']:
         livro.nome = nome_livro
         livro.autor = autor
-        livro.co_autor = co_autor
         livro.categoria = categoria
         livro.save()
         return redirect('ver_livros')
@@ -184,23 +184,12 @@ def alterar_livro(request):
         return redirect('/usuarios/sair')
 
 
-def seus_emprestimos(request):
+def ver_emprestimos(request):
     usuario = Usuario.objects.get(id=request.session['usuario'])
     emprestimos = Emprestimos.objects.filter(nome_emprestado=usuario)
 
     return render(request, 'adminlte/ver_emprestimos.html', {'usuario_logado': request.session['usuario'],
                                                              'emprestimos': emprestimos})
-
-
-def processa_avaliacao(request):
-    id_emprestimo = request.POST.get('id_emprestimo')
-    opcoes = request.POST.get('opcoes')
-    id_livro = request.POST.get('id_livro')
-
-    emprestimo = Emprestimos.objects.get(id=id_emprestimo)
-    emprestimo.avaliacao = opcoes
-    emprestimo.save()
-    return redirect(f'/adminlte/templates/adminlte/ver_livros.html{id_livro}')
 
 
 def buscar(request):

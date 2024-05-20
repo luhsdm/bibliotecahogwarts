@@ -1,0 +1,28 @@
+{% if resultado_busca > 0 %}
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>Email</th>
+      <th>Telefone</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for usuario in usuarios %}
+    <tr>
+      <td>{{ usuario.nome }}</td>
+      <td>{{ usuario.cpf }}</td>
+      <td>{{ usuario.email }}</td>
+      <td>{{ usuario.telefone }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if resultado_busca == 0 %}
+<div class="callout callout-warning">
+  Nenhum resultado encontrado
+</div>
+{% endif %}

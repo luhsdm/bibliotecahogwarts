@@ -15,8 +15,8 @@ class CadastroLivro(forms.ModelForm):
 
     class Meta:
         model = Livros
-        fields = ['nome', 'autor', 'ano_publicacao',
-                  'editora', 'quantidade', 'categoria']
+        fields = ['nome', 'imagem', 'autor', 'ano_publicacao',
+                  'categoria', 'editora', 'quantidade']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -36,3 +36,8 @@ def cadastrar_livro(request):
     else:
         form = CadastroLivro()
         return render(request, 'home.html', {'form': form})
+
+class UsuarioForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['nome', 'cpf', 'telefone', 'email', 'senha']

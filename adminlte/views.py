@@ -17,3 +17,6 @@ def login(request):
 
 def ver_livros(request):
     return render(request, 'adminlte/ver_livros.html')
+
+def ver_emprestimos(request):
+    return render(request, 'adminlte/ver_emprestimos.html')

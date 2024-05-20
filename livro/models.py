@@ -21,7 +21,7 @@ class Livros(models.Model):
     emprestado = models.BooleanField(default=False)
     categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
     usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
-    imagem = models.ImageField(upload_to='livros/', null=True, blank=True)
+    imagem = models.ImageField(upload_to='capa_livro/', null=True, blank=True)
     data_emprestimo = models.DateField(null=True, blank=True)
 
     class Meta:

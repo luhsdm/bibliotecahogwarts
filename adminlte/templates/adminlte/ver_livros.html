@@ -21,8 +21,9 @@
     </li>
   </ul>
 </nav>
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-expanded">
-  <a href="home.html" class="brand-link">
+  <a href="" class="brand-link">
     <img src="{% static 'dist/img/logobranco.png' %}" style="width: 150px; height: auto;">
   </a>
   <div class="sidebar">
@@ -53,6 +54,12 @@
               <a href="{% url 'ver_livros' %}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Ver Livros</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'ver_emprestimos' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Ver Empréstimos</p>
               </a>
             </li>
             <li class="nav-item">
@@ -99,10 +106,25 @@
             <th scope="col">Autor</th>
             <th scope="col">Categoria</th>
             <th scope="col">Ano de Publicação</th>
+            <th scope="col"> Quantidade Estoque</th>
             <th scope="col">Imagem</th>
           </tr>
         </thead>
         <tbody id="tabela-livros">
+          {% for livro in livros %}
+          <tr>
+            <td>{{ livro.titulo }}</td>
+            <td>{{ livro.autor }}</td>
+            <td>{{ livro.categoria }}</td>
+            <td>{{ livro.ano_publicacao }}</td>
+            <td>{{ livro.ano_publicacao }}</td>
+            <td>
+              {{ livro.imagem }}
+              <img src="{{ livro.imagem.url }}" height="100px">
+            </td>
+            </td>
+          </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
@@ -115,7 +137,7 @@
       if (query.trim() !== '') {
         $.ajax({
           type: 'POST',
-          url: '{% url "buscar_livro" %}',
+          url: '{% url "buscar_livros" %}',
           data: {
             'search_query': query,
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()

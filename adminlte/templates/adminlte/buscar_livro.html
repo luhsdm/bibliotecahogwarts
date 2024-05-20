@@ -5,7 +5,10 @@
   <td>{{ livro.autor }}</td>
   <td>{{ livro.categoria }}</td>
   <td>{{ livro.ano_publicacao }}</td>
-  {%if livro.imagem%}<td><img src="{{ livro.imagem.url }}" alt="{{ livro.imagem }}"></td>{% endif %}
+  <td>{{ livro.quantidade}}</td>
+  {% if livro.imagem %}
+  <td style="text-align: center;"><img src="{{ livro.imagem.url }}" height="100px" alt="{{ livro.imagem }}"></td>
+  {% endif %}
 </tr>
 {% endfor %}
 {% endif %}
