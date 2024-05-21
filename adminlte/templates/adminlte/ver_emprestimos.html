@@ -9,20 +9,6 @@
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-user mr-2"></i> {{ nome_usuario }}
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-user mr-2"></i> {{ nome_usuario }}
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="{% url 'sair' %}" class="dropdown-item">
-                    <i class="fas fa-sign-out-alt mr-2"></i> Sair
-                </a>
-            </div>
-        </li>
     </ul>
 </nav>
 
@@ -78,31 +64,11 @@
         </nav>
     </div>
 </aside>
-
+<br><br><br>
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-6 col-6">
-            <form id="ver_emprestimos" method="POST" action="{% url 'ver_emprestimos' %}">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label class="small-label" for="search_query">Pesquisar por nome do livro:</label>
-                    <div class="input-group input-group-lg">
-                        <input type="search" class="form-control form-control-lg" placeholder="Pesquisar por nome do livro"
-                            name="search_query" id="search_query">
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-lg btn-default" id="search-button">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <hr>
-    <div class="row justify-content-center">
         <div class="col-10">
+            <button class="btn btn-primary" onclick="buscarEmprestimos()">Mostrar Empréstimos</button>
             <h2>Empréstimos Encontrados</h2>
             <table class="table table-striped">
                 <thead>
@@ -110,14 +76,26 @@
                         <th scope="col">Livro</th>
                         <th scope="col">Data Empréstimo</th>
                         <th scope="col">Data Devolução</th>
+                        <th scope="col">Usuário</th>
                     </tr>
                 </thead>
                 <tbody id="tabela-emprestimos">
                     {% for emprestimo in emprestimos %}
                     <tr>
-                        <td>{{ emprestimo.livro }}</td>
+                        <td>{{ emprestimo.livro.nome }}</td>
                         <td>{{ emprestimo.data_emprestimo }}</td>
-                        <td>{% if emprestimo.data_devolucao %}{{ emprestimo.data_devolucao }}{% else %}Ainda não devolvido{% endif %}</td>
+                        <td>{{ emprestimo.data_devolucao }}</td>
+                        <td>
+                            {% if emprestimo.usuario %}
+                            {{ emprestimo.usuario.nome }}
+                            {% else %}
+                            Não especificado
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">Nenhum empréstimo encontrado.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -125,27 +103,18 @@
         </div>
     </div>
 </div>
-
 <script>
-    $(document).ready(function() {
-        $('#ver_emprestimos').submit(function(event) {
-            event.preventDefault();
-            var query = $('#search_query').val().trim();
-
-            if (query !== '') {
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        $('#tabela-emprestimos').html(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
+    function buscarEmprestimos() {
+        $.ajax({
+            type: 'GET',
+            url: '{% url "buscar_emprestimo" %}',
+            success: function (response) {
+                $('#tabela-emprestimos').html(response.html);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
             }
         });
-    });
+    }
 </script>
 {% endblock %}

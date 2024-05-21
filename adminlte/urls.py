@@ -10,6 +10,6 @@ urlpatterns = [
     path('livro/', include('livro.urls')),
     path('ver_livros/', views.ver_livros, name='ver_livros'),
     path('ver_emprestimos/', views.ver_emprestimos, name='ver_emprestimos'),
-    
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

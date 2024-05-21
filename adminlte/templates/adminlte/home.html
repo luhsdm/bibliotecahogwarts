@@ -155,11 +155,11 @@
                       </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Cadastrar</button>
-                    <!-- Adicionando o elemento livroCadastradoAlert -->
+
                     <div id="livroCadastradoAlert" class="alert alert-success" style="display: none;">
                       Livro cadastrado com sucesso!
                     </div>
-                    <!-- Fim do elemento livroCadastradoAlert -->
+
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                     </div>
@@ -287,16 +287,6 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="usuario">Pesquisar Usuário</label>
-                      <div class="input-group">
-                        <input type="text" class="form-control" id="usuario" placeholder="Digite o nome do usuario"
-                          oninput="#()">
-                        <div class="input-group-append">
-                          <button class="btn btn-primary" type="button" onclick="#()">Pesquisar</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
                       <label for="livro_emprestado">Livro</label>
                       <select class="form-control" id="livro_emprestado" name="livro_emprestado" required>
                         {% for livro in livros %}
@@ -351,91 +341,36 @@
           <!--Modal Devolver Livro-->
           <div class="modal fade" id="modal-devolucao-livro">
             <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Registrar Devolução de Livro</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="POST" action="{% url 'devolver_livro' %}">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="livro_devolvido">Livro</label>
-                                <select class="form-control" id="livro_devolvido" name="livro_devolvido" required>
-                                    {% for emprestimo in emprestimos_ativos %}
-                                    <option value="{{ emprestimo.id }}">{{ emprestimo.livro.nome }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="data_devolucao">Data de Devolução</label>
-                                <input type="date" class="form-control" id="data_devolucao" name="data_devolucao" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Registrar</button>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    </div>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Registrar Devolução de Livro</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+                <div class="modal-body">
+                  <form method="POST" action="{% url 'devolver_livro' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="livro_devolvido">Livro</label>
+                      <select class="form-control" id="livro_devolvido" name="livro_devolvido" required>
+                        {% for emprestimo in ver_emprestimos %}
+                        <option value="{{ emprestimo.livro.id }}">{{ emprestimo.livro.nome }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="data_devolucao">Data de Devolução</label>
+                      <input type="date" class="form-control" id="data_devolucao" name="data_devolucao" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar</button>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+              </div>
             </div>
-        </div>
-
+          </div>
 </section>
-
-
-<div class="row justify-content-center">
-  <div class="card col-md-8">
-    <div class="card-header">
-      <h3 class="card-title">
-        <i class="ion ion-clipboard mr-1"></i>
-        Últimos Empréstimos de Livros
-      </h3>
-
-      <div class="card-tools">
-        <ul class="pagination pagination-sm">
-          <li class="page-item"><a href="#" class="page-link">&laquo;</a></li>
-          <li class="page-item"><a href="#" class="page-link">1</a></li>
-          <li class="page-item"><a href="#" class="page-link">2</a></li>
-          <li class="page-item"><a href="#" class="page-link">3</a></li>
-          <li class="page-item"><a href="#" class="page-link">&raquo;</a></li>
-        </ul>
-      </div>
-    </div>
-    <!-- /.card-header -->
-    <div class="card-body">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nome do Livro</th>
-            <th>Nome do Usuário</th>
-            <th>Data de Empréstimo</th>
-            <th>Data de Devolução</th>
-          </tr>
-        </thead>
-        <tbody>
-
-          <tr>
-            <td>1</td>
-            <td>Nome do Livro 1</td>
-            <td>Nome do Usuário 1</td>
-            <td>2024-05-01</td>
-            <td>2024-05-08</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Nome do Livro 2</td>
-            <td>Nome do Usuário 2</td>
-            <td>2024-05-03</td>
-            <td>2024-05-10</td>
-          </tr>
-
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     console.log('DOMContentLoaded event triggered');
@@ -450,63 +385,51 @@
       fetch(form.action, {
         method: form.method,
         body: formData,
-        headers: {
-          'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
-        }
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          if (data.success) {
-            // Reset the form
-            form.reset();
-            // Display success message
-            document.getElementById('livroCadastradoAlert').style.display = 'block';
-            setTimeout(function () {
-              document.getElementById('livroCadastradoAlert').style.display = 'none';
-            }, 3000);
+        .then(function (response) {
+          if (response.ok) {
+            console.log('Livro cadastrado com sucesso');
+            alert('Livro cadastrado com sucesso!');
+            console.log('Response:', response);
+            console.log('Response Text:', response.statusText);
+            if (response.status === 302) {
+              console.log('Redirecionamento após cadastro de livro');
+
+            } else {
+              document.getElementById('livroCadastradoAlert').style.display = 'block';
+              setTimeout(function () {
+                document.getElementById('livroCadastradoAlert').style.display = 'none';
+              }, 3000); //
+
+              // Fechar modal
+              var modal = document.getElementById('modal-cadastro-livro');
+              var modalBackdrop = document.querySelector('.modal-backdrop');
+              if (modal) {
+                modal.style.display = 'none';
+              }
+              if (modalBackdrop) {
+                modalBackdrop.remove();
+              }
+
+
+              form.reset();
+            }
           }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(function (error) {
+          console.error('Erro:', error);
+          alert('Erro ao cadastrar livro!');
+        });
     });
 
     document.getElementById('btnIncrement').addEventListener('click', function () {
       var input = document.getElementById('quantidade');
-      input.value = parseInt(input.value) + 1;
+      input.stepUp();
     });
 
     document.getElementById('btnDecrement').addEventListener('click', function () {
       var input = document.getElementById('quantidade');
-      if (parseInt(input.value) > 0) {
-        input.value = parseInt(input.value) - 1;
-      }
-    });
-
-    document.getElementById('livro_pesquisa').addEventListener('input', buscarLivros);
-
-    function buscarLivros() {
-      var query = document.getElementById('livro_pesquisa').value;
-      fetch("{% url 'buscar_livros' %}?q=" + query)
-        .then(response => response.json())
-        .then(data => {
-          var select = document.getElementById('livro_emprestado');
-          select.innerHTML = ''; // Clear options
-          data.forEach(function (livro) {
-            var option = document.createElement('option');
-            option.value = livro.id;
-            option.textContent = livro.nome;
-            select.appendChild(option);
-          });
-        })
-        .catch(error => console.error('Error:', error));
-    }
-
-    document.getElementById('data_emprestimo').addEventListener('change', function () {
-      var dataEmprestimo = new Date(this.value);
-      var dataDevolucao = new Date(dataEmprestimo);
-      dataDevolucao.setDate(dataDevolucao.getDate() + 7);
-      var dataDevolucaoInput = document.getElementById('data_devolucao');
-      dataDevolucaoInput.value = dataDevolucao.toISOString().slice(0, 10);
+      input.stepDown();
     });
 
   });
