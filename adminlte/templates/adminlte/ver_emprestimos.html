@@ -104,7 +104,7 @@
     </div>
 </div>
 <script>
-    function buscarEmprestimos() {
+    $(document).ready(function () {
         $.ajax({
             type: 'GET',
             url: '{% url "buscar_emprestimo" %}',
@@ -115,6 +115,6 @@
                 console.error(xhr.responseText);
             }
         });
-    }
+    })
 </script>
 {% endblock %}

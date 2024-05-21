@@ -29,6 +29,11 @@
   <!-- summernote -->
   <link rel="stylesheet" href="{% static 'plugins/summernote/summernote-bs4.min.css' %}">
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+
   {% block head %} {% endblock %}
 
 
@@ -38,10 +43,6 @@
 
 
   {% endblock %}
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
-  <!-- jQuery UI 1.11.4 -->
-  <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
     $.widget.bridge('uibutton', $.ui.button)
