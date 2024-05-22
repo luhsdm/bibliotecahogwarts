@@ -32,7 +32,8 @@ class Livros(models.Model):
 
 
 class Emprestimos(models.Model):
-    usuario_emprestado = models.ForeignKey(
+
+    nome_emprestado = models.ForeignKey(
         Usuario, on_delete=models.DO_NOTHING, blank=True, null=True)
     data_emprestimo = models.DateTimeField()
     data_devolucao = models.DateTimeField(blank=True, null=True)
@@ -44,4 +45,4 @@ class Emprestimos(models.Model):
         verbose_name = 'Emprestimo'
 
     def __str__(self) -> str:
-        return f"{self.usuario_emprestado} | {self.livro}"
+        return f"{self.nome_emprestado} | {self.livro}"

@@ -124,15 +124,15 @@ def cadastrar_emprestimo(request):
     if request.method == 'POST':
         livro_emprestado_id = request.POST.get('livro_emprestado')
         data_emprestimo = request.POST.get('data_emprestimo')
-        usuario_id = request.POST.get('usuario')
-
+        usuario_formulario = request.POST.get('usuario_emprestado')
+        
         if not data_emprestimo:
             return HttpResponse("A data de empréstimo é obrigatória.")
 
         if not livro_emprestado_id:
             return HttpResponse("O livro emprestado é obrigatório.")
 
-        if not usuario_id:
+        if not usuario_formulario:
             return HttpResponse("O usuário é obrigatório.")
 
         livro = Livros.objects.get(id=livro_emprestado_id)
@@ -146,9 +146,11 @@ def cadastrar_emprestimo(request):
         data_emprestimo_consciente = make_aware(data_emprestimo_obj)
         data_devolucao_consciente = make_aware(data_devolucao_obj)
 
-        usuario = Usuario.objects.get(id=usuario_id)
+        usuario_logado = Usuario.objects.get(id=request.session['usuario'])
+        usuario_emprestimo = Usuario.objects.get(id=usuario_formulario)
 
-        emprestimo = Emprestimos(usuario=usuario,
+        emprestimo = Emprestimos(nome_emprestado=usuario_emprestimo,
+                                 usuario=usuario_logado,
                                  livro_id=livro_emprestado_id,
                                  data_emprestimo=data_emprestimo_consciente,
                                  data_devolucao=data_devolucao_consciente)
