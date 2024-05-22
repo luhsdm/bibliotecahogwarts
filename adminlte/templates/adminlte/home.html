@@ -268,60 +268,59 @@
           <!-- Modal para cadastrar empréstimo -->
           <div class="modal fade" id="modal-cadastro-emprestimo">
             <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title">Novo Empréstimo</h4>
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Novo Empréstimo</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'cadastrar_emprestimo' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="livro_devolvido">Pesquisar Livro</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="livro_pesquisa" placeholder="Digite o nome do livro" oninput="buscarLivros()">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" onclick="buscarLivros()">Pesquisar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="livro_emprestado">Livro</label>
+                                <select class="form-control" id="livro_emprestado" name="livro_emprestado" required>
+                                    {% for livro in livros %}
+                                    <option value="{{ livro.id }}">{{ livro.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="usuario_emprestado">Usuário</label>
+                                <select class="form-control" id="usuario" name="usuario_emprestado" required>
+                                    {% for livro in livros %}
+                                        <option value="{{ usuario_emprestado.id }}">{{ usuario_emprestado.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="data_emprestimo">Data de Empréstimo</label>
+                                <input type="date" class="form-control" id="data_emprestimo" name="data_emprestimo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="data_devolucao">Data de Devolução</label>
+                                <input type="date" class="form-control" id="data_devolucao" name="data_devolucao" readonly>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                            <div id="livroCadastradoAlert" class="alert alert-success" style="display: none;">
+                                Livro cadastrado com sucesso!
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                  <form method="POST" action="{% url 'cadastrar_emprestimo' %}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                      <label for="livro_devolvido">Pesquisar Livro</label>
-                      <div class="input-group">
-                        <input type="text" class="form-control" id="livro_pesquisa" placeholder="Digite o nome do livro"
-                          oninput="buscarLivros()">
-                        <div class="input-group-append">
-                          <button class="btn btn-primary" type="button" onclick="buscarLivros()">Pesquisar</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="livro_emprestado">Livro</label>
-                      <select class="form-control" id="livro_emprestado" name="livro_emprestado" required>
-                        {% for livro in livros %}
-                        <option value="{{ livro.id }}">{{ livro.nome }}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="usuario">Usuário</label>
-                      <select class="form-control" id="usuario" name="usuario" required>
-                        {% for usuario in usuarios %}
-                        <option value="{{ usuario.id }}">{{ usuario.nome }}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="data_emprestimo">Data de Empréstimo</label>
-                      <input type="date" class="form-control" id="data_emprestimo" name="data_emprestimo" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="data_devolucao">Data de Devolução</label>
-                      <input type="date" class="form-control" id="data_devolucao" name="data_devolucao" readonly>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Cadastrar</button>
-                    <div id="livroCadastradoAlert" class="alert alert-success" style="display: none;">
-                      Livro cadastrado com sucesso!
-                    </div>
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                </div>
-              </div>
             </div>
-          </div>
+        </div>
 
           <div class="col-lg-6 col-6">
             <div class="small-box bg-danger mx-auto">
