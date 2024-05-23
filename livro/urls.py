@@ -12,6 +12,7 @@ urlpatterns = [
     path('cadastrar_emprestimo', views.cadastrar_emprestimo,
          name='cadastrar_emprestimo'),
     path('devolver_livro', views.devolver_livro, name="devolver_livro"),
+    path('listar_usuario_por_livro_para_devolucao', views.listar_usuario_por_livro_para_devolucao, name='listar_usuario_por_livro_para_devolucao'),
     path('alterar_livro', views.alterar_livro, name="alterar_livro"),
     path('ver_emprestimos', views.ver_emprestimos, name="ver_emprestimos"),
     path('buscar_emprestimo/', views.buscar_emprestimo, name='buscar_emprestimo'),

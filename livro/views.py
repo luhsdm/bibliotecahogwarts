@@ -13,7 +13,7 @@ from usuarios.models import Usuario
 import holidays
 from django.utils.timezone import make_aware
 from django.template.loader import render_to_string
-
+from django.core import serializers
 
 def calcular_data_devolucao(data_emprestimo):
     def is_business_day(date):
@@ -37,23 +37,17 @@ def home(request):
         status_categoria = request.GET.get('cadastro_categoria')
         livros = Livros.objects.filter(usuario=usuario)
         total_livros = Livros.objects.count()
-        total_usuarios = Usuario.objects.count()
         total_emprestimos = Emprestimos.objects.count()
         form = CadastroLivro()
-        form.fields['categoria'].queryset = Categoria.objects.filter(
-            usuario=usuario)
+        form.fields['categoria'].queryset = Categoria.objects.filter(usuario=usuario)
         form_categoria = Categoria()
         usuarios = Usuario.objects.all()
         categorias = Categoria.objects.all()
-
-        livros_emprestar = Livros.objects.filter(
-            usuario=usuario).filter(emprestado=False)
-        livros_emprestados = Livros.objects.filter(
-            usuario=usuario).filter(emprestado=True)
+        livros_emprestar = Livros.objects.filter(usuario=usuario).filter(emprestado=False)
+        livros_emprestados = Livros.objects.filter(usuario=usuario).filter(emprestado=True)
 
         # Adicionando lógica para buscar os últimos 5 empréstimos
-        ultimos_emprestimos = Emprestimos.objects.filter(
-            usuario=usuario).order_by('-data_emprestimo')[:5]
+        ultimos_emprestimos = Emprestimos.objects.filter(usuario=usuario).order_by('-data_emprestimo')[:5]
 
         return render(request, 'adminlte/home.html', {'livros': livros,
                                                       'usuario_logado': usuario_id,
@@ -64,14 +58,30 @@ def home(request):
                                                       'categorias': categorias,
                                                       'livros_emprestar': livros_emprestar,
                                                       'total_livros': total_livros,
-                                                      'total_usuarios': total_usuarios,
+                                                      'total_usuarios': usuarios.count(),
                                                       'total_emprestimos': total_emprestimos,
                                                       'livros_emprestados': livros_emprestados,
                                                       'ultimos_emprestimos': ultimos_emprestimos})
     else:
         return redirect('/usuarios/login/?status=2')
+    
+#== ÁREA CATEGORIA ==#
+def cadastrar_categoria(request):
+    form = Categoria(request.POST)
+    nome = form.data['nome']
+    descricao = form.data['descricao']
+    id_usuario = request.POST.get('usuario')
+    if int(id_usuario) == int(request.session.get('usuario')):
+        user = Usuario.objects.get(id=id_usuario)
+        categoria = Categoria(nome=nome, descricao=descricao, usuario=user)
+        categoria.save()
+        return redirect('home?cadastro_categoria=1')
+    else:
+        return HttpResponse('Pare de ser um usuário malandrinho. Não foi desta vez.')
+#== FIM ÁREA CATEGORIA ==#
 
 
+#== ÁREA LIVROS ==#
 def ver_livros(request):
     return render(request, 'ver_livros')
 
@@ -99,27 +109,64 @@ def cadastrar_livro(request):
         form = CadastroLivro()
         categorias = Categoria.objects.all()
         return render(request, 'adminlte/home.html', {'form': form, 'categorias': categorias})
+    
+    
+def alterar_livro(request):
+    livro_id = request.POST.get('livro_id')
+    nome_livro = request.POST.get('nome_livro')
+    autor = request.POST.get('autor')
+    categoria_id = request.POST.get('categoria_id')
+
+    categoria = Categoria.objects.get(id=categoria_id)
+    livro = Livros.objects.get(id=livro_id)
+    if livro.usuario.id == request.session['usuario']:
+        livro.nome = nome_livro
+        livro.autor = autor
+        livro.categoria = categoria
+        livro.save()
+        return redirect('ver_livros')
+    else:
+        return redirect('/usuarios/sair')
 
 
 def excluir_livro(request, id):
     livro = Livros.objects.get(id=id).delete()
     return redirect('home')
 
+#== FIM ÁREA LIVROS ==#
 
-def cadastrar_categoria(request):
-    form = Categoria(request.POST)
-    nome = form.data['nome']
-    descricao = form.data['descricao']
-    id_usuario = request.POST.get('usuario')
-    if int(id_usuario) == int(request.session.get('usuario')):
-        user = Usuario.objects.get(id=id_usuario)
-        categoria = Categoria(nome=nome, descricao=descricao, usuario=user)
-        categoria.save()
-        return redirect('home?cadastro_categoria=1')
+
+#== ÁREA DEVOLUÇÃO ==#
+def devolver_livro(request):
+    if request.method == 'POST':
+        id_livro_devolver = request.POST.get('livro_devolvido')
+        livro_devolver = Livros.objects.get(id=id_livro_devolver)
+        livro_devolver.emprestado = False
+        livro_devolver.save()
+
+        # LINHA DANDO ERRO, SE TIRA O Q(data_devolucao__isnull=True O CODIGO FUNCIONA
+        # emprestimo_devolver = Emprestimos.objects.get(Q(livro=livro_devolver) & Q(data_devolucao__isnull=True))
+        emprestimo_devolver = Emprestimos.objects.get(Q(livro=livro_devolver))
+        emprestimo_devolver.data_devolucao = datetime.now()
+        emprestimo_devolver.save()
+
+        return redirect('home')
     else:
-        return HttpResponse('Pare de ser um usuário malandrinho. Não foi desta vez.')
+        return HttpResponse("Método de solicitação não permitido para esta URL.")
+    
+    
+def listar_usuario_por_livro_para_devolucao(request):
+        id_livro_devolver = request.POST.get('livro_devolvido')
+        livro_devolver = Livros.objects.get(id=id_livro_devolver)
+        id_usuarios_com_o_livro = Emprestimos.objects.filter(livro=livro_devolver)
+        nome_usuarios_com_o_livro = Usuario.objects.filter(id__in=id_usuarios_com_o_livro)
+
+        return JsonResponse({'usuarios_com_o_livro': serializers.serialize('json', nome_usuarios_com_o_livro )})
+
+#== FIM ÁREA DEVOLUÇÃO ==#
 
 
+#== ÁREA EMPRESTIMOS ==#
 def cadastrar_emprestimo(request):
     if request.method == 'POST':
         livro_emprestado_id = request.POST.get('livro_emprestado')
@@ -162,43 +209,8 @@ def cadastrar_emprestimo(request):
         return redirect('home')
     else:
         return HttpResponseBadRequest("Método não permitido para esta rota.")
-
-
-def devolver_livro(request):
-    if request.method == 'POST':
-        id_livro_devolver = request.POST.get('livro_devolvido')
-        livro_devolver = Livros.objects.get(id=id_livro_devolver)
-        livro_devolver.emprestado = False
-        livro_devolver.save()
-
-        emprestimo_devolver = Emprestimos.objects.get(
-            Q(livro=livro_devolver) & Q(data_devolucao__isnull=True))
-        emprestimo_devolver.data_devolucao = datetime.now()
-        emprestimo_devolver.save()
-
-        return redirect('home')
-    else:
-        return HttpResponse("Método de solicitação não permitido para esta URL.")
-
-
-def alterar_livro(request):
-    livro_id = request.POST.get('livro_id')
-    nome_livro = request.POST.get('nome_livro')
-    autor = request.POST.get('autor')
-    categoria_id = request.POST.get('categoria_id')
-
-    categoria = Categoria.objects.get(id=categoria_id)
-    livro = Livros.objects.get(id=livro_id)
-    if livro.usuario.id == request.session['usuario']:
-        livro.nome = nome_livro
-        livro.autor = autor
-        livro.categoria = categoria
-        livro.save()
-        return redirect('ver_livros')
-    else:
-        return redirect('/usuarios/sair')
-
-
+    
+    
 def ver_emprestimos(request):
     if request.method == 'GET':
         emprestimos = Emprestimos.objects.all()
@@ -226,3 +238,5 @@ def buscar_emprestimo(request):
         return JsonResponse({'html': html})
 
     return render(request, 'adminlte/buscar_emprestimo.html', {'emprestimos': emprestimos, 'resultado_busca': emprestimos.count()})
+
+#== FIM ÁREA EMPRESTIMOS ==#

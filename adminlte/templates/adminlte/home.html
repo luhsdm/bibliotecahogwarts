@@ -352,11 +352,18 @@
                     <div class="form-group">
                       <label for="livro_devolvido">Livro</label>
                       <select class="form-control" id="livro_devolvido" name="livro_devolvido" required>
-                        {% for emprestimo in ver_emprestimos %}
-                        <option value="{{ emprestimo.livro.id }}">{{ emprestimo.livro.nome }}</option>
+                        {% for livro_emprestado in livros_emprestados %}
+                        <option value="{{ livro_emprestado.id }}">{{ livro_emprestado.nome }}</option>
                         {% endfor %}
                       </select>
                     </div>
+
+                    <div class="form-group">
+                      <label for="usuario_devolucao">Usuários</label>
+                      <select class="form-control" id="usuario_devolucao" name="usuario_devolucao" required>
+                      </select>
+                    </div>
+
                     <div class="form-group">
                       <label for="data_devolucao">Data de Devolução</label>
                       <input type="date" class="form-control" id="data_devolucao" name="data_devolucao" required>
@@ -372,6 +379,27 @@
           </div>
 </section>
 <script>
+  $('#livro_devolvido').on('change', (event) => {
+    $.ajax({
+      type: 'POST',
+      url: '{% url "listar_usuario_por_livro_para_devolucao" %}',
+      headers: { "X-CSRFToken": '{{csrf_token}}' },
+      datatype: `json`,
+      data: { livro_devolvido: event.target.value },
+      success: function (response) {
+        var usuario_devolucao_lista = JSON.parse(response.usuarios_com_o_livro)
+
+        usuario_devolucao_lista.forEach(e => $('#usuario_devolucao').html(`
+        <option value="${e.fields.pk}">${e.fields.nome}</option>`));
+
+      },
+      error: function (xhr, status, error) {
+        console.error(xhr.responseText);
+      }
+    });
+
+  });
+
   document.addEventListener('DOMContentLoaded', function () {
     console.log('DOMContentLoaded event triggered');
 
