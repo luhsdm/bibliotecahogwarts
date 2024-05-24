@@ -379,6 +379,10 @@
           </div>
 </section>
 <script>
+  $(document).ready(function () {
+    $('#livro_devolvido').trigger("change");
+  })
+
   $('#livro_devolvido').on('change', (event) => {
     $.ajax({
       type: 'POST',
@@ -397,7 +401,6 @@
         console.error(xhr.responseText);
       }
     });
-
   });
 
   document.addEventListener('DOMContentLoaded', function () {
