@@ -4,8 +4,8 @@
     <td>{{ emprestimo.data_emprestimo }}</td>
     <td>{{ emprestimo.data_devolucao }}</td>
     <td>
-        {% if emprestimo.usuario %}
-        {{ emprestimo.usuario.nome }}
+        {% if emprestimo.nome_emprestado %}
+        {{ emprestimo.nome_emprestado.nome }}
         {% else %}
         Não especificado
         {% endif %}

@@ -289,7 +289,7 @@
                     <div class="form-group">
                       <label for="livro_emprestado">Livro</label>
                       <select class="form-control" id="livro_emprestado" name="livro_emprestado" required>
-                        {% for livro in livros %}
+                        {% for livro in livros_emprestar %}
                         <option value="{{ livro.id }}">{{ livro.nome }}</option>
                         {% endfor %}
                       </select>
