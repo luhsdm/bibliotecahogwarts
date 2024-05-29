@@ -27,8 +27,10 @@ def home(request):
         categorias = Categoria.objects.all()
         total_devolucao = Devolucao.objects.count()
 
+        # Modificação aqui: incluir livros com quantidade disponível maior que zero
         livros_emprestar = Livros.objects.filter(
-            usuario=usuario, emprestado=False)
+            usuario=usuario, quantidade__gt=0)
+
         livros_emprestados = Livros.objects.filter(
             usuario=usuario, emprestado=True)
 
