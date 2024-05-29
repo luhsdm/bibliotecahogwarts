@@ -46,12 +46,6 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="./index.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Relatórios</p>
-              </a>
-            </li>
-            <li class="nav-item">
               <a href="{% url 'ver_livros' %}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Ver Livros</p>
@@ -276,6 +270,7 @@
                 <div class="modal-body">
                   <form method="POST" action="{% url 'cadastrar_emprestimo' %}">
                     {% csrf_token %}
+                    <input type="hidden" name="status" value="emprestado">
                     <div class="form-group">
                       <label for="livro_devolvido">Pesquisar Livro</label>
                       <div class="input-group">
@@ -329,7 +324,7 @@
                 <p>
                 <h3>Devolução</h3>
                 </p>
-                <h5>0{{ total_devolucao }}</h5>
+                <h5>{{ total_devolucao }}</h5>
               </div>
               <div class="icon">
                 <i class="ion-arrow-swap"></i>
@@ -349,6 +344,7 @@
                 <div class="modal-body">
                   <form method="POST" action="{% url 'devolver_livro' %}">
                     {% csrf_token %}
+                    <input type="hidden" name="status" value="devolvido">
                     <div class="form-group">
                       <label for="livro_devolvido">Livro</label>
                       <select class="form-control" id="livro_devolvido" name="livro_devolvido" required>
@@ -379,22 +375,24 @@
           </div>
 </section>
 <script>
+  var csrfToken = "{{ csrf_token }}";
+
   $(document).ready(function () {
     $('#livro_devolvido').trigger("change");
   })
 
   $('#livro_devolvido').on('change', (event) => {
     $.ajax({
-      type: 'POST',
+      type: 'GET',  // Alterado para método GET
       url: '{% url "listar_usuario_por_livro_para_devolucao" %}',
-      headers: { "X-CSRFToken": '{{csrf_token}}' },
-      datatype: `json`,
+      headers: { "X-CSRFToken": csrfToken },
+      datatype: 'json',
       data: { livro_devolvido: event.target.value },
       success: function (response) {
-        var usuario_devolucao_lista = JSON.parse(response.usuarios_com_o_livro)
+        var usuario_devolucao_lista = response.usuarios_com_o_livro;  // Não é necessário fazer JSON.parse
 
-        usuario_devolucao_lista.forEach(e => $('#usuario_devolucao').html(`
-        <option value="${e.fields.pk}">${e.fields.nome}</option>`));
+        usuario_devolucao_lista.forEach(e => $('#usuario_devolucao').append(`
+          <option value="${e.pk}">${e.fields.nome}</option>`));
 
       },
       error: function (xhr, status, error) {
@@ -462,8 +460,10 @@
       var input = document.getElementById('quantidade');
       input.stepDown();
     });
+    
 
   });
 </script>
+
 
 {% endblock %}

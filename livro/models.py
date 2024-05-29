@@ -40,9 +40,27 @@ class Emprestimos(models.Model):
     livro = models.ForeignKey(Livros, on_delete=models.DO_NOTHING)
     usuario = models.ForeignKey(
         Usuario, on_delete=models.CASCADE, related_name='emprestimos_usuario')
+    STATUS_CHOICES = (
+        ('E', 'Emprestado'),
+        ('D', 'Devolvido'),
+    )
+    status = models.CharField(
+        max_length=1, choices=STATUS_CHOICES, default='E')
 
     class Meta:
         verbose_name = 'Emprestimo'
 
     def __str__(self) -> str:
         return f"{self.nome_emprestado} | {self.livro}"
+
+
+class Devolucao(models.Model):
+    emprestimo = models.ForeignKey(Emprestimos, on_delete=models.CASCADE)
+    data_devolucao = models.DateTimeField(auto_now_add=True)
+    observacoes = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = 'Devolução'
+
+    def __str__(self) -> str:
+        return f"{self.emprestimo.livro} | {self.data_devolucao}"

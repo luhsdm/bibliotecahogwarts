@@ -20,3 +20,6 @@ def ver_livros(request):
 
 def ver_emprestimos(request):
     return render(request, 'adminlte/ver_emprestimos.html')
+
+def ver_devolucao(request):
+    return render(request, 'adminlte/ver_devolucao.html')
