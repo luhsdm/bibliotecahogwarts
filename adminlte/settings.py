@@ -72,11 +72,11 @@ WSGI_APPLICATION = 'adminlte.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'railway',
-        'USER': 'root',
-        'PASSWORD': 'BObSfbSIXyVkpTDItlMJzDhZlraKAwjP',
-        'HOST': 'monorail.proxy.rlwy.net',
-        'PORT': '55920',
+        'NAME': os.getenv('MYSQLDATABASE'),
+        'USER': os.getenv('MYSQLUSER'),
+        'PASSWORD': os.getenv('MYSQLPASSWORD'),
+        'HOST': os.getenv('MYSQLHOST'),
+        'PORT': os.getenv('MYSQLPORT'),
     }
 }
 
