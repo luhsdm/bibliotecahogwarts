@@ -48,7 +48,7 @@ def home(request):
                                                       'livros_emprestados': livros_emprestados,
                                                       'total_devolucao': total_devolucao})
     else:
-        return redirect('/usuarios/login/?status=2')
+        return redirect('/usuarios/login/')
 
 
 # == ÁREA CATEGORIA ==#
