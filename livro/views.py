@@ -48,7 +48,7 @@ def home(request):
                                                       'livros_emprestados': livros_emprestados,
                                                       'total_devolucao': total_devolucao})
     else:
-        return redirect('/usuarios/login/')
+        return redirect('../adminlte/templates/adminlte/login.html')
 
 
 # == ÁREA CATEGORIA ==#
