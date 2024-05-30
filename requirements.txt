@@ -4,7 +4,7 @@ requests
 rest-framework-simplejwt
 setuptools
 six
-sqlparse
+#sqlparse
 stripe
 typing_extensions
 tzdata
@@ -28,11 +28,11 @@ drf-yasg
 environs
 asgiref
 holidays
-mysqlclient
-django-cors-headers
-django-ckeditor
-django-debug-toolbar
-django-filter
-django-storages
-django-environ
+#mysqlclient
+#django-cors-headers
+#django-ckeditor
+#django-debug-toolbar
+#django-filter
+#django-storages
+#django-environ
 
