@@ -1,7 +1,9 @@
 asgiref==3.8.1
 Django==5.0.6
+gunicorn==22.0.0
 holidays==0.48
-mysqlclient>=2.2.4
+mysqlclient==2.2.4
+packaging==24.0
 pillow==10.3.0
 python-dateutil==2.9.0.post0
 six==1.16.0
