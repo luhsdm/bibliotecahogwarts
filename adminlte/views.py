@@ -4,22 +4,19 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, '../adminlte/templates/adminlte/login.html')
-
+    return render(request, 'adminlte/login.html')
 
 def cadastro(request):
-    return render(request, '../adminlte/templates/adminlte/cadastro.html')
-
+    return render(request, 'adminlte/cadastro.html')
 
 def login(request):
-    return render(request, '../adminlte/templates/adminlte/login.html')
-
+    return render(request, 'adminlte/login.html')
 
 def ver_livros(request):
-    return render(request, '../adminlte/templates/adminlte/ver_livros.html')
+    return render(request, 'adminlte/ver_livros.html')
 
 def ver_emprestimos(request):
-    return render(request, '../adminlte/templates/adminlte/ver_emprestimos.html')
+    return render(request, 'adminlte/ver_emprestimos.html')
 
 def ver_devolucao(request):
-    return render(request, '../adminlte/templates/adminlte/ver_devolucao.html')
+    return render(request, 'adminlte/ver_devolucao.html')
