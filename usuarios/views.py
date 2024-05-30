@@ -23,7 +23,7 @@ def home(request):
     if usuario_logado_id:
         usuario = Usuario.objects.get(pk=usuario_logado_id)
         nome_usuario = abreviar_nome(usuario.nome)
-        return render(request, 'adminlte/home.html', {'nome_usuario': nome_usuario})
+        return render(request, 'templates/home.html', {'nome_usuario': nome_usuario})
     else:
         return redirect('/adminlte/usuarios/login/')
 
@@ -38,14 +38,14 @@ def login(request):
         usuario = Usuario.objects.get(pk=usuario_logado_id)
         nome_usuario = abreviar_nome(usuario.nome)
         return redirect('/adminlte/templates/home/')
-    return render(request, 'adminlte/login.html', {'status': status, 'nome_usuario': nome_usuario})
+    return render(request, 'templates/login.html', {'status': status, 'nome_usuario': nome_usuario})
 
 
 def cadastro(request):
     if 'usuario' in request.session:
         return redirect('/livro/home/')
     status = request.GET.get('status')
-    return render(request, 'adminlte/cadastro.html', {'status': status})
+    return render(request, 'templates/cadastro.html', {'status': status})
 
 
 def valida_cadastro(request):

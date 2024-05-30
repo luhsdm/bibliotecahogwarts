@@ -34,7 +34,7 @@ def home(request):
         livros_emprestados = Livros.objects.filter(
             usuario=usuario, emprestado=True)
 
-        return render(request, 'adminlte/home.html', {'livros': livros,
+        return render(request, 'templates/home.html', {'livros': livros,
                                                       'usuario_logado': usuario_id,
                                                       'form': form,
                                                       'status_categoria': status_categoria,
@@ -82,7 +82,7 @@ def buscar_livros(request):
     search_query = request.POST.get('search_query', '')
     livros = Livros.objects.filter(nome__contains=search_query)
 
-    return render(request, 'adminlte/buscar_livro.html', {'livros': livros, 'resultado_busca': livros.count()})
+    return render(request, 'templates/buscar_livro.html', {'livros': livros, 'resultado_busca': livros.count()})
 
 
 def cadastrar_livro(request):
@@ -96,11 +96,11 @@ def cadastrar_livro(request):
             novo_livro.save()
             return redirect('home')
         else:
-            return render(request, 'adminlte/home.html', {'form': form})
+            return render(request, 'templates/home.html', {'form': form})
     else:
         form = CadastroLivro()
         categorias = Categoria.objects.all()
-        return render(request, 'adminlte/home.html', {'form': form, 'categorias': categorias})
+        return render(request, 'templates/home.html', {'form': form, 'categorias': categorias})
 
 
 def alterar_livro(request):
@@ -261,18 +261,18 @@ def ver_emprestimos(request):
                 emprestimo.nome_emprestado.nome = emprestimo.nome_emprestado.abreviar_nome()
 
         print("Quantidade de empréstimos:", len(emprestimos))
-        return render(request, 'adminlte/ver_emprestimos.html', {'emprestimos': emprestimos})
+        return render(request, 'templates/ver_emprestimos.html', {'emprestimos': emprestimos})
     else:
         form = EmprestimosLivrosForm(request.GET)
         if form.is_valid():
             livro_id = form.cleaned_data['livro']
             livro = Livros.objects.get(id=livro_id)
             emprestimos = Emprestimos.objects.filter(livro=livro)
-            return render(request, 'adminlte/ver_emprestimos.html', {'emprestimos': emprestimos})
+            return render(request, 'templates/ver_emprestimos.html', {'emprestimos': emprestimos})
         else:
             emprestimos = Emprestimos.objects.all()
             print("Quantidade de empréstimos:", len(emprestimos))
-            return render(request, 'adminlte/ver_emprestimos.html', {'emprestimos': emprestimos})
+            return render(request, 'templates/ver_emprestimos.html', {'emprestimos': emprestimos})
 
 
 def buscar_emprestimo(request):
@@ -283,7 +283,7 @@ def buscar_emprestimo(request):
                                 'emprestimos': emprestimos})
         return JsonResponse({'html': html})
 
-    return render(request, 'adminlte/buscar_emprestimo.html', {'emprestimos': emprestimos, 'resultado_busca': emprestimos.count()})
+    return render(request, 'templates/buscar_emprestimo.html', {'emprestimos': emprestimos, 'resultado_busca': emprestimos.count()})
 
 
 # == FIM ÁREA EMPRESTIMOS ==#
