@@ -1,1 +1,1 @@
-web: gunicorn adminlte.wsgi --log-file -
+web: gunicorn django_adminlte.wsgi --log-file -
