@@ -2,6 +2,7 @@
 from pathlib import Path
 import os
 import logging
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -71,16 +72,31 @@ WSGI_APPLICATION = 'adminlte.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+RAILWAY_ENV = os.getenv('RAILWAY_ENV', 'public')
+
+if RAILWAY_ENV == 'private':
+    DATABASE_URL = os.getenv('DATABASE_PRIVATE_URL')
+else:
+    DATABASE_URL = os.getenv('DATABASE_URL')
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQLDATABASE'),
-        'USER': os.getenv('MYSQLUSER'),
-        'PASSWORD': os.getenv('MYSQLPASSWORD'),
-        'HOST': os.getenv('MYSQLHOST'),
-        'PORT': os.getenv('MYSQLPORT'),
-    }
+    'default': dj_database_url.parse(DATABASE_URL)
 }
+
+DATABASE_PRIVATE_URL = f"postgresql://{os.getenv('PGUSER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('RAILWAY_PRIVATE_DOMAIN')}:5432/{os.getenv('PGDATABASE')}"
+DATABASE_URL = f"postgresql://{os.getenv('PGUSER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('RAILWAY_TCP_PROXY_DOMAIN')}:{os.getenv('RAILWAY_TCP_PROXY_PORT')}/{os.getenv('PGDATABASE')}"
+PGDATA = '/var/lib/postgresql/data/pgdata'
+PGDATABASE = os.getenv('POSTGRES_DB')
+PGHOST = os.getenv('RAILWAY_TCP_PROXY_DOMAIN')
+PGPASSWORD = os.getenv('POSTGRES_PASSWORD')
+PGPORT = os.getenv('RAILWAY_TCP_PROXY_PORT')
+PGPRIVATEHOST = os.getenv('RAILWAY_PRIVATE_DOMAIN')
+PGUSER = os.getenv('POSTGRES_USER')
+POSTGRES_DB = 'railway'
+POSTGRES_PASSWORD = 'PvbKkxUKLyhFXpYwXlrLGuhoVWcztZlZ'
+POSTGRES_USER = 'postgres'
+SSL_CERT_DAYS = 820
+
 
 
 # Password validation
