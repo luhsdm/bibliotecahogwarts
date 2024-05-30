@@ -2,24 +2,20 @@ from django.shortcuts import render
 
 # Create your views here.
 
-
 def index(request):
-    return render(request, 'templates/login.html')
-
+    return render(request, 'login.html')
 
 def cadastro(request):
-    return render(request, 'templates/cadastro.html')
-
+    return render(request, 'cadastro.html')
 
 def login(request):
-    return render(request, 'templates/login.html')
-
+    return render(request, 'login.html')
 
 def ver_livros(request):
-    return render(request, 'templates/ver_livros.html')
+    return render(request, 'ver_livros.html')
 
 def ver_emprestimos(request):
-    return render(request, 'templates/ver_emprestimos.html')
+    return render(request, 'ver_emprestimos.html')
 
 def ver_devolucao(request):
-    return render(request, 'templates/ver_devolucao.html')
+    return render(request, 'ver_devolucao.html')
