@@ -29,3 +29,10 @@ environs
 asgiref
 holidays
 mysqlclient
+django-cors-headers
+django-ckeditor
+django-debug-toolbar
+django-filter
+django-storages
+django-environ
+
