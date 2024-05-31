@@ -141,8 +141,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Diretórios adicionais onde o Django procurará por arquivos estáticos
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'django_adminlte/adminlte/static'),
-    os.path.join(BASE_DIR, 'django_adminlte/staticfiles'),
+    os.path.join(BASE_DIR, 'adminlte/static'),
+    # Remova a entrada abaixo, pois STATIC_ROOT já está configurado como o diretório de coleta
+    # os.path.join(BASE_DIR, 'staticfiles'),
 ]
 
 
