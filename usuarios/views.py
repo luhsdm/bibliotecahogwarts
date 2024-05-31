@@ -37,7 +37,7 @@ def login(request):
     if usuario_logado_id:
         usuario = Usuario.objects.get(pk=usuario_logado_id)
         nome_usuario = abreviar_nome(usuario.nome)
-        return redirect('home.html')
+        return redirect('home')
     return render(request, 'login.html', {'status': status, 'nome_usuario': nome_usuario})
 
 
