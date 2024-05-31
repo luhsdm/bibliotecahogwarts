@@ -54,7 +54,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates','adminlte')],  # Certifique-se de que o caminho esteja correto
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Ajuste o diretório para o diretório pai dos templates do aplicativo
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,7 +66,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'adminlte.wsgi.application'
 
 
