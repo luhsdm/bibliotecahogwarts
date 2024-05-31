@@ -17,27 +17,27 @@ def abreviar_nome(nome):
 
 def home(request):
     if 'usuario' not in request.session:
-        return redirect('login.html')
+        return redirect('login')
 
     usuario_logado_id = request.session.get('usuario')
     if usuario_logado_id:
         usuario = Usuario.objects.get(pk=usuario_logado_id)
         nome_usuario = abreviar_nome(usuario.nome)
-        return render(request, 'templates/home.html', {'nome_usuario': nome_usuario})
+        return render(request, 'home.html', {'nome_usuario': nome_usuario})
     else:
-        return redirect('login.html')
+        return redirect('login')
 
 
 def login(request):
     if 'usuario' in request.session:
-        return redirect('home.html')
+        return redirect('home')
     status = request.GET.get('status')
     nome_usuario = None
     usuario_logado_id = request.session.get('usuario')
     if usuario_logado_id:
         usuario = Usuario.objects.get(pk=usuario_logado_id)
         nome_usuario = abreviar_nome(usuario.nome)
-        return redirect('home.html')
+        return redirect('home')
     return render(request, 'login.html', {'status': status, 'nome_usuario': nome_usuario})
 
 
