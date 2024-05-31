@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import os
 import logging
@@ -18,9 +17,9 @@ SECRET_KEY = 'django-insecure-_fogd_5ezidi(ea2f2p=-h*#3j#t)fj*9b6-vctm=6prnl^946
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['bibliotecahogwarts.up.railway.app','127.0.0:1']
+ALLOWED_HOSTS = ['bibliotecahogwarts.up.railway.app', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://bibliotecahogwarts.up.railway.app', 'http://127.0.0.1']
-SECURE_CROSS_ORIGIN_OPENER_POLICY ='same-origin-allow-popups'
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 
 # Application definition
@@ -46,13 +45,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'adminlte.urls'
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 TEMPLATES = [
     {
@@ -139,7 +135,7 @@ LOGGING = {
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_STORAGE="whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -147,4 +143,4 @@ STATICFILES_STORAGE="whitenoise.storage.CompressedManifestStaticFilesStorage"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'  
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
