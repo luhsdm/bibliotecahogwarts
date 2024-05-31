@@ -34,7 +34,7 @@ def home(request):
         livros_emprestados = Livros.objects.filter(
             usuario=usuario, emprestado=True)
 
-        return render(request, 'templates/home.html', {'livros': livros,
+        return render(request, 'home.html', {'livros': livros,
                                                       'usuario_logado': usuario_id,
                                                       'form': form,
                                                       'status_categoria': status_categoria,
