@@ -73,11 +73,11 @@ def cadastrar_categoria(request):
 
 
 # == ÁREA LIVROS ==#
-
+@login_required
 def ver_livros(request):
     return render(request, 'ver_livros')
 
-
+@login_required
 def buscar_livros(request):
     search_query = request.POST.get('search_query', '')
     livros = Livros.objects.filter(nome__contains=search_query)
@@ -254,7 +254,8 @@ def cadastrar_emprestimo(request):
         return redirect('home')
     else:
         return HttpResponseBadRequest("Método não permitido para esta rota.")
-
+    
+@login_required
 def ver_emprestimos(request):
     if request.method == 'GET':
         emprestimos = Emprestimos.objects.all()
