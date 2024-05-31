@@ -88,9 +88,9 @@ def valida_login(request):
 
             if usuario:
                 request.session['usuario'] = usuario.id
-                return redirect('home')  
+                return redirect('home')  # Redireciona para a URL nomeada 'home' após o login bem-sucedido
             else:
-                return redirect('login', status=1)  
+                return redirect('login', status=1)  # Redireciona de volta para a página de login em caso de falha no login
         else:
             return HttpResponse("Campos de email e senha não foram fornecidos.")
     else:
