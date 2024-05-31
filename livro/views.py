@@ -78,7 +78,7 @@ def ver_livros(request):
     return render(request, 'ver_livros')
 
 def buscar_livros(request):
-    search_query = request.POST.get('search_query', '')
+    search_query = request.POST.get('search_query')
     livros = Livros.objects.filter(nome__contains=search_query)
 
     return render(request, 'buscar_livros.html', {'livros': livros, 'resultado_busca': livros.count()})
