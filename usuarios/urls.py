@@ -7,5 +7,5 @@ urlpatterns = [
     path('valida_cadastro/', views.valida_cadastro, name='valida_cadastro'),
     path('valida_login/', views.valida_login, name='valida_login'),
     path('sair/', views.sair, name='sair'),
-    # path('home/', views.home, name='home'),  # Caminho para a página home
+    path('home/', views.home, name='home'),  
 ]

@@ -84,19 +84,17 @@ def valida_login(request):
 
         if email and senha:
             senha_hash = sha256(senha.encode()).hexdigest()
-            usuario = Usuario.objects.filter(
-                email=email, senha=senha_hash).first()
+            usuario = Usuario.objects.filter(email=email, senha=senha_hash).first()
 
             if usuario:
                 request.session['usuario'] = usuario.id
-                return redirect('home.html')
+                return redirect('home')
             else:
-                return redirect('/usuarios/login/?status=1')
+                return redirect('login', status=1)
         else:
             return HttpResponse("Campos de email e senha não foram fornecidos.")
     else:
         return HttpResponse("Método de requisição inválido.")
-
 
 def sair(request):
     request.session.flush()
