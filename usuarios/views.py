@@ -91,7 +91,7 @@ def valida_login(request):
                 request.session['usuario'] = usuario.id
                 return redirect('home.html')
             else:
-                return redirect('/usuarios/login/?status=1')
+                return redirect('login')
         else:
             return HttpResponse("Campos de email e senha não foram fornecidos.")
     else:
