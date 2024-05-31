@@ -16,7 +16,7 @@ DATABASE_URL = "postgresql://postgres:MGGechvcgDYeFwGJsPquFymXReaqLnKc@monorail.
 SECRET_KEY = 'django-insecure-_fogd_5ezidi(ea2f2p=-h*#3j#t)fj*9b6-vctm=6prnl^946'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['bibliotecahogwarts.up.railway.app','127.0.0:1']
 #CSRF_TRUSTED_ORIGINS = ['https://bibliotecahogwarts.up.railway.app', 'http://127.0.0.1']
