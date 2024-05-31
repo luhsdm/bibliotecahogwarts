@@ -9,6 +9,7 @@ import holidays
 from django.utils.timezone import make_aware
 from django.template.loader import render_to_string
 from django.core import serializers
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -73,7 +74,7 @@ def cadastrar_categoria(request):
 
 # == ÁREA LIVROS ==#
 
-
+@login_required
 def ver_livros(request):
     return render(request, 'ver_livros')
 
@@ -252,7 +253,7 @@ def cadastrar_emprestimo(request):
     else:
         return HttpResponseBadRequest("Método não permitido para esta rota.")
 
-
+@login_required
 def ver_emprestimos(request):
     if request.method == 'GET':
         emprestimos = Emprestimos.objects.all()
