@@ -23,3 +23,6 @@ def ver_emprestimos(request):
 
 def ver_devolucao(request):
     return render(request, 'ver_devolucao.html')
+
+def buscar_livros(request):
+    return render(request, 'buscar_livros.html')

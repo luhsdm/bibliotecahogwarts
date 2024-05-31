@@ -3,7 +3,7 @@ from django.urls import path, include
 from adminlte import views
 from django.conf.urls.static import static
 from django.conf import settings
-from livro.views import ver_emprestimos, ver_livros
+from livro.views import buscar_livros, ver_emprestimos, ver_livros
 from usuarios import views as usuarios_views
 from adminlte import views as adminlte_views
 from usuarios import views as usuarios_views 
@@ -18,5 +18,6 @@ urlpatterns = [
     path('ver_emprestimos/', login_required(ver_emprestimos), name='ver_emprestimos'),
     path('ver_livros/', login_required(ver_livros), name='ver_livros'),
     path('valida_login/', usuarios_views.valida_login, name='valida_login'), 
+    path('buscar_livros/', login_required(buscar_livros), name='buscar_livros'),
     # Use o prefixo usuarios_ aqui
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
