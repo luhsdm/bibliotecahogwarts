@@ -75,7 +75,8 @@ def cadastrar_categoria(request):
 # == ÁREA LIVROS ==#
 
 def ver_livros(request):
-    return render(request, 'ver_livros')
+    livros = Livros.objects.all()  # Obtém todos os livros do banco de dados
+    return render(request, 'ver_livros.html', {'livros': livros})
 
 
 def buscar_livros(request):
