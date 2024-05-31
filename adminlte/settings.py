@@ -20,7 +20,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['bibliotecahogwarts.up.railway.app','127.0.0:1']
 CSRF_TRUSTED_ORIGINS = ['https://bibliotecahogwarts.up.railway.app', 'http://127.0.0.1']
-#SECURE_CROSS_ORIGIN_OPENER_POLICY ='same-origin-allow-popups'
+SECURE_CROSS_ORIGIN_OPENER_POLICY ='same-origin-allow-popups'
 
 
 # Application definition
