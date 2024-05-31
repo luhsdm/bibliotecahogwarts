@@ -67,7 +67,8 @@
       </ul>
     </nav>
   </div>
-</aside> <br> <br>
+</aside>
+<br> <br>
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-lg-6 col-6">
@@ -76,8 +77,7 @@
         <div class="form-group">
           <label class="small-label" for="search_query">Pesquise pelo nome do livro:</label>
           <div class="input-group input-group-lg">
-            <input type="search" class="form-control form-control-lg" placeholder="Pesquisar por nome do livro"
-              name="search_query" id="search_query">
+            <input type="search" class="form-control form-control-lg" placeholder="Pesquisar por nome do livro" name="search_query" id="search_query">
             <div class="input-group-append">
               <button type="button" onclick="ver_livros()" class="btn btn-lg btn-default" id="search-button">
                 <i class="fas fa-search"></i>
@@ -100,22 +100,22 @@
             <th scope="col">Autor</th>
             <th scope="col">Categoria</th>
             <th scope="col">Ano de Publicação</th>
-            <th scope="col"> Quantidade Estoque</th>
+            <th scope="col">Quantidade Estoque</th>
             <th scope="col">Imagem</th>
           </tr>
         </thead>
         <tbody id="tabela-livros">
           {% for livro in livros %}
           <tr>
-            <td>{{ livro.titulo }}</td>
+            <td>{{ livro.nome }}</td>
             <td>{{ livro.autor }}</td>
             <td>{{ livro.categoria }}</td>
             <td>{{ livro.ano_publicacao }}</td>
-            <td>{{ livro.ano_publicacao }}</td>
+            <td>{{ livro.quantidade }}</td>
             <td>
-              {{ livro.imagem }}
-              <img src="{{ livro.imagem.url }}" height="100px">
-            </td>
+              {% if livro.imagem %}
+              <img src="{{ livro.imagem.url }}" height="100px" alt="{{ livro.nome }}">
+              {% endif %}
             </td>
           </tr>
           {% endfor %}
@@ -123,28 +123,28 @@
       </table>
     </div>
   </div>
+</div>
 
-  <script>
-    function ver_livros() {
-      var query = $('#search_query').val();
+<script>
+  function ver_livros() {
+    var query = $('#search_query').val();
 
-      if (query.trim() !== '') {
-        $.ajax({
-          type: 'POST',
-          url: '{% url "buscar_livros" %}',
-          data: {
-            'search_query': query,
-            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
-          },
-          success: function (response) {
-            $('#tabela-livros').html(response);
-          },
-          error: function (xhr, status, error) {
-            console.error(xhr.responseText);
-          }
-        });
-      }
-
+    if (query.trim() !== '') {
+      $.ajax({
+        type: 'POST',
+        url: '{% url "buscar_livros" %}',
+        data: {
+          'search_query': query,
+          'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function (response) {
+          $('#tabela-livros').html(response);
+        },
+        error: function (xhr, status, error) {
+          console.error(xhr.responseText);
+        }
+      });
     }
-  </script>
-  {% endblock %}
+  }
+</script>
+{% endblock %}
