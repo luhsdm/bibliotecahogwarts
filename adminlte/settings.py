@@ -28,6 +28,8 @@ ALLOWED_HOSTS = ['bibliotecahogwarts.up.railway.app','127.0.0:1']
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic'
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -45,6 +47,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'adminlte.urls'
@@ -135,17 +139,8 @@ LOGGING = {
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# Diretório onde os arquivos estáticos serão coletados
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Diretórios adicionais onde o Django procurará por arquivos estáticos
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'adminlte/static'),
-    # Remova a entrada abaixo, pois STATIC_ROOT já está configurado como o diretório de coleta
-    # os.path.join(BASE_DIR, 'staticfiles'),
-]
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE="whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
