@@ -169,20 +169,23 @@ def devolver_livro(request):
 
 def listar_usuario_por_livro_para_devolucao(request):
     if request.method == 'GET' and 'livro_devolvido' in request.GET:
-        livro_id = request.GET['livro_devolvido']
-        try:
-            livro = Livros.objects.get(id=livro_id)
-            # Filtrando empréstimos apenas pelo status de empréstimo 'E' (emprestado)
-            emprestimos = Emprestimos.objects.filter(livro=livro, status='E')
-            if emprestimos.exists():
-                # Construindo a lista de usuários associados apenas aos empréstimos em andamento
-                usuarios_com_o_livro = [{'pk': emprestimo.nome_emprestado.pk, 'fields': {
-                    'nome': emprestimo.nome_emprestado.nome}} for emprestimo in emprestimos if emprestimo.nome_emprestado]
-                return JsonResponse({'usuarios_com_o_livro': usuarios_com_o_livro})
-            else:
-                return JsonResponse({'usuarios_com_o_livro': []})
-        except Livros.DoesNotExist:
-            pass
+        livro_id = request.GET.get('livro_devolvido', None)
+        if livro_id:
+            try:
+                livro = Livros.objects.get(id=livro_id)
+                # Filtrando empréstimos apenas pelo status de empréstimo 'E' (emprestado)
+                emprestimos = Emprestimos.objects.filter(livro=livro, status='E')
+                if emprestimos.exists():
+                    # Construindo a lista de usuários associados apenas aos empréstimos em andamento
+                    usuarios_com_o_livro = [{'pk': emprestimo.nome_emprestado.pk, 'fields': {
+                        'nome': emprestimo.nome_emprestado.nome}} for emprestimo in emprestimos if emprestimo.nome_emprestado]
+                    return JsonResponse({'usuarios_com_o_livro': usuarios_com_o_livro})
+                else:
+                    return JsonResponse({'usuarios_com_o_livro': []})
+            except Livros.DoesNotExist:
+                pass
+        else:
+            return JsonResponse({'error': 'O parâmetro livro_devolvido está ausente ou vazio.'})
     return JsonResponse({'usuarios_com_o_livro': []})
 
 
