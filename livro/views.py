@@ -263,18 +263,18 @@ def ver_emprestimos(request):
                 emprestimo.nome_emprestado.nome = emprestimo.nome_emprestado.abreviar_nome()
 
         print("Quantidade de empréstimos:", len(emprestimos))
-        return render(request, 'templates/ver_emprestimos.html', {'emprestimos': emprestimos})
+        return render(request, 'ver_emprestimos.html', {'emprestimos': emprestimos})
     else:
         form = EmprestimosLivrosForm(request.GET)
         if form.is_valid():
             livro_id = form.cleaned_data['livro']
             livro = Livros.objects.get(id=livro_id)
             emprestimos = Emprestimos.objects.filter(livro=livro)
-            return render(request, 'templates/ver_emprestimos.html', {'emprestimos': emprestimos})
+            return render(request, 'ver_emprestimos.html', {'emprestimos': emprestimos})
         else:
             emprestimos = Emprestimos.objects.all()
             print("Quantidade de empréstimos:", len(emprestimos))
-            return render(request, 'templates/ver_emprestimos.html', {'emprestimos': emprestimos})
+            return render(request, 'ver_emprestimos.html', {'emprestimos': emprestimos})
 
 
 def buscar_emprestimo(request):
@@ -285,7 +285,7 @@ def buscar_emprestimo(request):
                                 'emprestimos': emprestimos})
         return JsonResponse({'html': html})
 
-    return render(request, 'templates/buscar_emprestimo.html', {'emprestimos': emprestimos, 'resultado_busca': emprestimos.count()})
+    return render(request, 'buscar_emprestimo.html', {'emprestimos': emprestimos, 'resultado_busca': emprestimos.count()})
 
 
 # == FIM ÁREA EMPRESTIMOS ==#
