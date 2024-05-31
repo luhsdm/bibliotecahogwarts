@@ -37,7 +37,7 @@ def login(request):
     if usuario_logado_id:
         usuario = Usuario.objects.get(pk=usuario_logado_id)
         nome_usuario = abreviar_nome(usuario.nome)
-        return redirect('home')
+        return redirect('home.html')
     return render(request, 'login.html', {'status': status, 'nome_usuario': nome_usuario})
 
 
@@ -84,17 +84,19 @@ def valida_login(request):
 
         if email and senha:
             senha_hash = sha256(senha.encode()).hexdigest()
-            usuario = Usuario.objects.filter(email=email, senha=senha_hash).first()
+            usuario = Usuario.objects.filter(
+                email=email, senha=senha_hash).first()
 
             if usuario:
                 request.session['usuario'] = usuario.id
-                return redirect('home')  # Redireciona para a URL nomeada 'home' após o login bem-sucedido
+                return redirect('home.html')
             else:
-                return redirect('login', status=1)  # Redireciona de volta para a página de login em caso de falha no login
+                return redirect('/usuarios/login/?status=1')
         else:
             return HttpResponse("Campos de email e senha não foram fornecidos.")
     else:
         return HttpResponse("Método de requisição inválido.")
+
 
 def sair(request):
     request.session.flush()

@@ -9,7 +9,6 @@ import holidays
 from django.utils.timezone import make_aware
 from django.template.loader import render_to_string
 from django.core import serializers
-from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -35,7 +34,7 @@ def home(request):
         livros_emprestados = Livros.objects.filter(
             usuario=usuario, emprestado=True)
 
-        return render(request, 'home.html', {'livros': livros,
+        return render(request, 'templates/home.html', {'livros': livros,
                                                       'usuario_logado': usuario_id,
                                                       'form': form,
                                                       'status_categoria': status_categoria,
@@ -83,7 +82,7 @@ def buscar_livros(request):
     search_query = request.POST.get('search_query', '')
     livros = Livros.objects.filter(nome__contains=search_query)
 
-    return render(request, 'buscar_livro.html', {'livros': livros, 'resultado_busca': livros.count()})
+    return render(request, 'templates/buscar_livro.html', {'livros': livros, 'resultado_busca': livros.count()})
 
 
 def cadastrar_livro(request):
@@ -97,11 +96,11 @@ def cadastrar_livro(request):
             novo_livro.save()
             return redirect('home')
         else:
-            return render(request, 'home.html', {'form': form})
+            return render(request, 'templates/home.html', {'form': form})
     else:
         form = CadastroLivro()
         categorias = Categoria.objects.all()
-        return render(request, 'home.html', {'form': form, 'categorias': categorias})
+        return render(request, 'templates/home.html', {'form': form, 'categorias': categorias})
 
 
 def alterar_livro(request):
@@ -253,6 +252,7 @@ def cadastrar_emprestimo(request):
     else:
         return HttpResponseBadRequest("Método não permitido para esta rota.")
 
+
 def ver_emprestimos(request):
     if request.method == 'GET':
         emprestimos = Emprestimos.objects.all()
@@ -261,7 +261,7 @@ def ver_emprestimos(request):
                 emprestimo.nome_emprestado.nome = emprestimo.nome_emprestado.abreviar_nome()
 
         print("Quantidade de empréstimos:", len(emprestimos))
-        return render(request, 'ver_emprestimos.html', {'emprestimos': emprestimos})
+        return render(request, 'templates/ver_emprestimos.html', {'emprestimos': emprestimos})
     else:
         form = EmprestimosLivrosForm(request.GET)
         if form.is_valid():
@@ -272,7 +272,7 @@ def ver_emprestimos(request):
         else:
             emprestimos = Emprestimos.objects.all()
             print("Quantidade de empréstimos:", len(emprestimos))
-            return render(request, 'ver_emprestimos.html', {'emprestimos': emprestimos})
+            return render(request, 'templates/ver_emprestimos.html', {'emprestimos': emprestimos})
 
 
 def buscar_emprestimo(request):
@@ -283,7 +283,7 @@ def buscar_emprestimo(request):
                                 'emprestimos': emprestimos})
         return JsonResponse({'html': html})
 
-    return render(request, 'buscar_emprestimo.html', {'emprestimos': emprestimos, 'resultado_busca': emprestimos.count()})
+    return render(request, 'templates/buscar_emprestimo.html', {'emprestimos': emprestimos, 'resultado_busca': emprestimos.count()})
 
 
 # == FIM ÁREA EMPRESTIMOS ==#
