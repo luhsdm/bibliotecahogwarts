@@ -7,6 +7,9 @@ def cadastro(request):
 def login(request):
     return render(request, 'login.html')
 
+def home(request):
+    return render(request, 'home.html' )
+
 def ver_livros(request):
     return render(request, 'ver_livros.html')
 

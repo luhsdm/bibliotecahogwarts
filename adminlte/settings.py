@@ -3,6 +3,8 @@ import os
 import logging
 import dj_database_url
 
+#senha super user admin usuario:boss senha: Pandor@2704
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASE_URL = "postgresql://postgres:MGGechvcgDYeFwGJsPquFymXReaqLnKc@monorail.proxy.rlwy.net:34227/railway"
