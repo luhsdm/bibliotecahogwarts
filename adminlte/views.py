@@ -27,7 +27,7 @@ def buscar_livros(request):
     if request.method == 'POST':
         search_query = request.POST.get('search_query')
         if search_query:
-            # Usando __icontains para pesquisa case-insensitive
-            livros = Livros.objects.filter(nome__icontains=search_query)
+            # Usando __iregex para pesquisa case-insensitive
+            livros = Livros.objects.filter(Q(nome__iregex=search_query))
             resultado_busca = livros.count()
     return render(request, 'buscar_livros.html', {'livros': livros, 'resultado_busca': resultado_busca})
