@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-
 from livro.models import Livros
 
 def cadastro(request):
@@ -28,6 +27,7 @@ def buscar_livros(request):
     if request.method == 'POST':
         search_query = request.POST.get('search_query')
         if search_query:
+            # Usando __icontains para pesquisa case-insensitive
             livros = Livros.objects.filter(nome__icontains=search_query)
             resultado_busca = livros.count()
     return render(request, 'buscar_livros.html', {'livros': livros, 'resultado_busca': resultado_busca})
